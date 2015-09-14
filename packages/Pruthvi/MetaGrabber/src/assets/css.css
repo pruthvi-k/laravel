@@ -1,0 +1,72 @@
+body{ font-family:Verdana, Arial, Helvetica, sans-serif}
+#heading
+{
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:56px;
+	color:#CC0000;				
+}
+
+.wrap{  margin-top:20px; height:500px;}
+
+.box{border:1px solid #E8E8E8; width:500px; padding:4px 4px 9px 4px; }
+
+.head{ 
+	background:url(link.gif) center left no-repeat; 
+	padding-left:20px;
+	color:#666666;
+	font-weight:bold; 
+	font-size:11px; 
+	height:17px;
+	padding-top:2px;
+	width:250px;
+	float:left
+}
+.close{ float:left; width:230px;  height:21px;}
+
+.closes:hover{ background:url(closeh.png) center right no-repeat; height:21px;}
+
+.closes{ background:url(close.png) top right no-repeat; width:24px; height:21px; cursor:pointer;}
+
+cursor:pointer;
+font-size:13px;
+font-weight:bold;
+
+input{ float:left;}
+#url{
+	font-size:13px;
+	border:solid #339999 1px;
+	height:20px;
+	margin-left:7px;
+	margin-right:0px;	
+	overflow:hidden;
+}
+#attach{
+	font-size:13px;
+	font-weight:bold;
+	border:solid #339999 1px;
+	height:24px;
+	margin-left:0px;
+	overflow:hidden;
+	cursor:pointer;
+	padding-bottom:2px;
+}
+.images{width:100px; height:100px; float:left; margin-right:8px;}
+
+.info{ width:360px; height:200px; float:left;}
+#loader{ margin:16px 7px 7px 7px;}
+
+.title{ font-size:11px; font-weight:bold; cursor:pointer; }
+
+.url{ font-size:11px; padding:3px;}
+.desc{ font-size:12px; margin-top:5px; cursor:pointer; }
+
+.title:hover{ background-color:#FFFF99}
+
+.desc:hover{ background-color:#FFFF99}
+
+#prev{cursor:pointer;}
+#next{cursor:pointer;}
+
+.totalimg{ font-size:10px; color:#333333;float:left; margin:5px;}
+
+
