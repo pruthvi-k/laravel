@@ -4,13 +4,18 @@
     <div class="row">
         <form action="{{ url('meta/show')  }}" method="POST" class="form-horizontal" id="meta-grabber-form">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="navbar-form navbar-left" role="search">
-                <div class="form-group"><input id="meta-grabber-url" class="form-control" type="text" name="meta-grabber-url" value=""/></div>
+            <div class="navbar-form row" role="search">
+
+                <div class="form-group">
+                    <input id="meta-grabber-url" class="form-control" type="text" name="meta-grabber-url" value=""/>
+                </div>
+
                 <button id="btn-get-meta" class="btn btn-default">Get</button>
+
             </div>
             <div class="meta-loader"></div>
             <div class="meta-message"></div>
-            <div id="meta-grabbed-content" class="col-md-12">
+            <div id="meta-grabbed-content"  class="row">
 
                 <div class="col-sm-6 col-md-4">
                     <div class="thumbnail">

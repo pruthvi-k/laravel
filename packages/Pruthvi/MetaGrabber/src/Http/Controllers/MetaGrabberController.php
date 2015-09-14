@@ -24,14 +24,18 @@ class MetaGrabberController extends Controller
 
     public function getContent(Request $request)
     {
-        $obj = new MetaGrabber();
-        //set url
-        $obj->setUrl($request->input('meta-grabber-url'));
+        $obj = new MetaGrabber($request->input('meta-grabber-url'));
+        $rs = $obj->load();
         $meta = $obj->getMeta();
-        $images = $obj->getImg();
-
+//        print_r($rs);exit;
+//        $obj = new MetaGrabber();
+//        //set url
+//        $obj->setUrl($request->input('meta-grabber-url'));
+//        $meta = $obj->getMeta();
+//        $images = $obj->getImg();
+//
         if($meta) {
-            return ['success' => true, 'meta' => $meta, 'images' => $images];
+            return ['success' => true, 'meta' => $meta, 'images' => [$meta['image']]];
         } else {
             return ['error' => true, 'message' => 'data not found'];
         }
