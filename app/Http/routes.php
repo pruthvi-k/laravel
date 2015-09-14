@@ -11,6 +11,8 @@
 |
 */
 
+//use Request;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,3 +27,10 @@ Route::get('modal', function () {
 
 
 Route::post('geo_location', 'GeoLocationController@create');
+
+get('broadcast/{name}', function($name){
+    event(new \App\Events\UserHasRegistered($name));
+    return "Done";
+});
+
+Route::get('carousel', '\Pruthvi\Carousel\Controllers\CarouselController@index');

@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Laravel</title>
+<head>
+    <title>Laravel</title>
 
-        <link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+    <script src="https://js.pusher.com/2.2/pusher.min.js"></script>
+</head>
+<body>
+<script>
+            (function(){
+                var pusher = new Pusher('de5bb6706137083dbec8', {
+                    encrypted: true
+                });
 
-        <style>
-            html, body {
-                height: 100%;
-            }
+                var channel = pusher.subscribe('test');
 
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                display: table;
-                font-weight: 100;
-                font-family: 'Lato';
-            }
+                channel.bind('App\\Events\\UserHasRegistered', function(data) {
+                    console.log(data);
+                });
+            })();
 
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
+//    new Vue({
+//        el:'#users',
+//        ready:function() {
+//            var pusher = new Pusher('de5bb6706137083dbec8', {
+//                encrypted: true
+//            });
+//            pusher.subscribe('test')
+//                    .bind('App\\Events\\UserHasRegistered', this.addUser);
+//        },
+//        methods: {
+//            addUser: function(user) {
+//                console.log(data);
+//            }
+//        }
+//
+//    });
+</script>
+<div class="container">
+    <h1>Welcome</h1>
+    <div class="content">
 
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 96px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">Laravel 5</div>
-            </div>
-        </div>
-    </body>
+    </div>
+</div>
+</body>
 </html>
