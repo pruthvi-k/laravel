@@ -7,6 +7,7 @@
  * Time: 4:22 PM
  */
 namespace Pruthvi\MetaGrabber\Http;
+use Illuminate\Support\Facades\Config;
 use Pruthvi\MetaGrabber\Http\ImageUrlFormatter;
 
 class MetaGrabber
@@ -17,11 +18,15 @@ class MetaGrabber
     protected $base;
     protected $headers;
     protected $user_agent;
+    protected $mg_image_width;
+    protected $mg_image_height;
 
     public function __construct($url)
     {
         // Store url
         $this->url = $url;
+        $this->mg_image_width = Config::get('metagrabber.mg_image_width');
+        $this->mg_image_height = Config::get('metagrabber.height');
     }
 
     /**
@@ -49,37 +54,14 @@ class MetaGrabber
     }
 
     /**
-     * get height of image
-     * @param type $image
-     * @return integer  - image height
-     */
-    public function getHeight($image)
-    {
-        $size = getimagesize($image);
-        $height = $size[1];
-        return $height;
-    }
-
-    /**
-     * get height image
-     * @param type $image
-     * @return string
-     */
-    public function getWidth($image)
-    {
-        $size = getimagesize($image);
-        $width = $size[0];
-        return $width;
-    }
-
-    /**
      * function to fetch all images , title and description
      * @return string
      */
     public function getMeta()
     {
-        $large_image_width = 600;
-        $large_image_height = 600;
+        $large_image_width = $this->mg_image_width;
+        $large_image_height = $this->mg_image_height;
+
         // Makes sure we're loaded
         $this->load();
         if ($this->load() == 404) {
@@ -141,10 +123,13 @@ class MetaGrabber
             $image_list = $xp->query("//img[@src]");
             $images = array();
 
+            //loop all images and find required size image
             for ($i = 0; $i < $image_list->length; $i++) {
 
                 $actualImage = $image_list->item($i)->getAttribute("src");
-                $img = ImageUrlFormatter::format($this->url, $actualImage);
+
+                $ImageUrlFormatter = new ImageUrlFormatter();
+                $img = $ImageUrlFormatter->format($this->url, $actualImage);
                 $ext = trim(pathinfo($img, PATHINFO_EXTENSION));
 
                 if ($img && $ext != 'gif') {
@@ -165,16 +150,15 @@ class MetaGrabber
                         $large_image_height = $height;
                     }
 
-                    if ($width < 600 || $height < 315) {
+                    if ($width < $this->mg_image_width || $height < $this->mg_image_height) {
                         continue;
                     } else {
-                        if($width>=600 && $height>=315)
+                        if($width >= $this->mg_image_width && $height >= $this->mg_image_height)
                         {
                             $large_image = $img;
                             break;
                         }
                     }
-                    // Add to collection. Use src as key to prevent duplicates.
                 }
 
             }
@@ -280,65 +264,5 @@ class MetaGrabber
     /* GET ALL META TAGS*/
 
 //    //Check the url
-//    public function checkUrl(){
-//
-//        //valid url given...?
-//        if (filter_var($this->url, FILTER_VALIDATE_URL) === FALSE){
-//            return false;
-//        }else{
-//
-//            //cek the url status
-//            $array = @get_headers($this->url);
-//            $status = $array[0];
-//            if(strpos($status,"200") or strpos($status,"301")){
-//                return true;
-//            }
-//            return false;
-//        }
-//    }
-//
-//    //getting meta tags
-//    public function getAllMeta($attr=null){
-//        if($attr){
-//            $meta = get_meta_tags($this->url);
-//            return isset($meta[$attr]) ? $meta[$attr] : 'No meta found';
-//        }
-//        return get_meta_tags($this->url);
-//    }
-//
-//    private function explodeTitle($a,$b,$c){
-//        $y = explode($b,$a);
-//        $x = explode($c,$y[1]);
-//        return $x[0];
-//    }
-//
-//    //getting title
-//    public function getTitle(){
-//        return $this->explodeTitle($this->html,"<title>","</title>");
-//    }
-//
-//    //getting images with DOMdocument
-//    /**
-//     * @return array
-//     */
-//    public function getImages(){
-//        $html = $this->html;
-//        $doc = new \DOMDocument;
-//
-//        @$doc->loadHTML($html);
-//        $tags = $doc ->getElementsByTagName('img');
-//
-//        $arr = array();
-//
-//        foreach ($tags as $tag) {
-//
-//            $arr[] = $tag->getAttribute('src');
-//        }
-//
-//        //return only the first image
-//        if(!empty($arr))
-//            return $arr;//$arr[0];
-//
-//    }
 
 }

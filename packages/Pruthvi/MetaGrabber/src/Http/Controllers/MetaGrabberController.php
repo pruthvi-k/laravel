@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Config;
 use Pruthvi\MetaGrabber\Http\MetaGrabber;
 
 class MetaGrabberController extends Controller
@@ -18,24 +19,36 @@ class MetaGrabberController extends Controller
      */
     public function index()
     {
-        return view('metagrabber::index');
+        return view('metagrabber::index')->with('template', Config::get('metagrabber.master_template'));
     }
 
+    public function metaBox()
+    {
+        return view('metagrabber::meta-box')->with('template', Config::get('metagrabber.master_template'));
+    }
+
+
+    public function getAllContent(Request $request)
+    {
+        $obj = new MetaGrabber($request->input('meta-grabber-url'));
+        $meta = $obj->getMeta();
+
+        if(!isset($meta['status'])) {
+            return ['success' => true, 'meta' => $meta, 'images' => [$meta['image']]];
+        } else {
+            return ['error' => true, 'message' => 'data not found'];
+        }
+    }
 
     public function getContent(Request $request)
     {
         $obj = new MetaGrabber($request->input('meta-grabber-url'));
-        $rs = $obj->load();
         $meta = $obj->getMeta();
-//        print_r($rs);exit;
-//        $obj = new MetaGrabber();
-//        //set url
-//        $obj->setUrl($request->input('meta-grabber-url'));
-//        $meta = $obj->getMeta();
-//        $images = $obj->getImg();
-//
-        if($meta) {
-            return ['success' => true, 'meta' => $meta, 'images' => [$meta['image']]];
+        $content['title'] = $meta['title'];
+        $content['description'] = $meta['description'];
+
+        if(!isset($meta['status'])) {
+            return ['success' => true, 'meta' => $content, 'images' => [$meta['image']]];
         } else {
             return ['error' => true, 'message' => 'data not found'];
         }

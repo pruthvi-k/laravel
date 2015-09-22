@@ -1,8 +1,14 @@
-@extends("metagrabber::master")
+@if ($template)
+    @extends("metagrabber::$template")
+@endif
+<script>
+    var basePath = "{{ url("meta/") }}/";
+</script>
+<link rel="stylesheet" href="{{ url("/assets/meta_grabber/style.css") }}">
 @section('meta-grabber')
     <h3>Meta Grabber Demo</h3>
     <div class="row">
-        <form action="{{ url('meta/show')  }}" method="POST" class="form-horizontal" id="meta-grabber-form">
+        <form action="{{ url('meta/getContent')  }}" method="POST" class="form-horizontal" id="meta-grabber-form">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="navbar-form row" role="search">
 
@@ -31,8 +37,6 @@
 
                 </div>
 
-
-
                 {{--<div id="mg-img" class="col-md-4"></div>--}}
                 <div id="mg-content" class="col-md-8">
                 </div>
@@ -43,109 +47,9 @@
     </div>
 @endsection
 <style>
-    #meta-grabber-img{
-        max-height: 200px;
-        max-width: 200px;
-    }
-    .thumbnail{
-        padding: 10px;
-        height: 340px;
-        width: 340px;
-        align-items: center;
-        vertical-align: middle;
-        background: #e3e3e3;
-    }
-    .thumbnail img{
-        margin: 0 auto;
-    }
+
 </style>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script type="text/javascript">
-    var meta_imgs = [];
-    $(document).ready(function(){
-        $('#btn-get-meta').click(function(){
-            var url = $('#meta-grabber-url').val();
-            var data = $('#meta-grabber-form').serialize() ;
+<script type="text/javascript" src="{{ url("/assets/meta_grabber/custom.js") }}">
 
-            if(!isValidURL(url)) {
-                displayMessage('error','Invalid URL');
-                return false;
-            }
-
-            ajaxSubmit('{{ url("meta/getContent") }}', 'mg-content', data);
-            {{--ajaxSubmit('{{ url("meta/getImages") }}', 'mg-content', data);--}}
-
-            return false;
-        });
-
-        var currentindex = 0;
-        $(".meta-grabber-nav-btn").click(function(){
-            var nav = $(this).data('value');
-            var index = $('#meta-grabber-img').data('value');
-
-            if(nav == 'next') {
-                currentindex = index+1;
-            } else {
-                if(currentindex > 0) {
-                    currentindex = index-1;
-                }
-            }
-
-            $('#meta-grabber-img').data('value', currentindex);
-            $('#meta-grabber-img').attr('src', meta_imgs[currentindex]);
-
-            if(meta_imgs.length == currentindex || currentindex == 0) {
-                $(this).attr('disabled', 'disabled');
-            }
-        });
-
-        function isValidURL(url){
-            var RegExp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-
-            if(RegExp.test(url)){
-                return true;
-            }else{
-                return false;
-            }
-        }
-
-        function ajaxSubmit(postUrl, div, data) {
-
-            $.ajax({
-                type: 'post',
-                url: postUrl,
-                data: data,
-                beforeSend: function()
-                {
-                    $('.meta-loader').show();
-                },
-                success: function(data)
-                {
-                    var contentstr = "";
-                    if(data.success) {
-                        $.each(data.meta,function(index,value){
-                            contentstr += "<div><label>"+ index +"</label> " + value + "</div>";
-                        });
-
-                        meta_imgs = data.images;
-                        if(meta_imgs) {
-                            $('#meta-grabber-img').attr('src', meta_imgs[0]);
-                            $('#meta-grabber-img').attr('data-value', 0);
-                        }
-                        console.log('',meta_imgs);
-                    }
-
-                    $('.meta-loader').hide();
-                    $('#'+div).html(contentstr);
-                },
-                error: function()
-                {
-                    displayMessage('error','error');
-                }
-            });
-        }
-        function displayMessage(type, msg) {
-            $('.meta-message').html(msg);
-        }
-    })
 </script>

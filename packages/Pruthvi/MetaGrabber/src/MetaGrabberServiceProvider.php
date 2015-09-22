@@ -29,9 +29,9 @@ class MetaGrabberServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/views', 'metagrabber');
 
         // publishing the migrations
-//        $this->publishes([
-//            __DIR__ . '/../database/migrations/2015_08_25_114208_create_chat_rooms_table.php' => base_path('database/migrations/2015_08_25_114208_create_chat_rooms_table.php'),
-//            __DIR__.'/../assets' => public_path('assets')
-//        ]);
+        $this->publishes([
+            __DIR__ . '/../config/metagrabber.php' => config_path('metagrabber.php'),
+            __DIR__.'/assets' => public_path('assets/meta_grabber')
+        ]);
     }
 }

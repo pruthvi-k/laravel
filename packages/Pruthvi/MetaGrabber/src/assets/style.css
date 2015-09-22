@@ -1,0 +1,15 @@
+#meta-grabber-img{
+	max-height: 200px;
+	max-width: 200px;
+}
+.thumbnail{
+	padding: 10px;
+	height: 340px;
+	width: 340px;
+	align-items: center;
+	vertical-align: middle;
+	background: #e3e3e3;
+}
+.thumbnail img{
+	margin: 0 auto;
+}
